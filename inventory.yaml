@@ -6,12 +6,8 @@ CEVXLANDCI:
           hosts:
             DC1_SPINE1:
               ansible_host: 172.100.100.11
-              # groups:
-              #   - bgp_enabled
             DC1_SPINE2:
               ansible_host: 172.100.100.12
-              # groups:
-              #   - bgp_enabled
         DC1_ACCESS:
           children:
             DC1_ACCESS1:

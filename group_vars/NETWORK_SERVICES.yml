@@ -11,7 +11,7 @@ tenants:
           - DC1_SPINE2
         address_family_ipv4:
           activate: true
-        remote_as: "65001.1002"
+        remote_as: "65000.2"
         shutdown: false
         bfd: true
       - name: INTER-DC2
@@ -20,7 +20,7 @@ tenants:
           - DC2_SPINE2
         address_family_ipv4:
           activate: true
-        remote_as: "65001.1001"
+        remote_as: "65000.1"
         shutdown: false
         bfd: true
     vrfs:

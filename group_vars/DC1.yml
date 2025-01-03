@@ -34,7 +34,7 @@ l3spine:
     uplink_native_vlan: 1
   node_groups:
     - group: SPINES
-      bgp_as: "65001.1001"
+      bgp_as: "65000.1"
       bgp_defaults:
         - bgp asn notation asdot
         - distance bgp 20 200 200

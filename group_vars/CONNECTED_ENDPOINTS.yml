@@ -41,13 +41,14 @@ servers:
   - name: client3-dc1
     rack: RackC
     adapters:
-      - endpoint_ports: [ Eth1, Eth2 ]
-        switch_ports: [ Ethernet5, Ethernet5 ]
-        switches: [ DC1_ACCESS2_1, DC1_ACCESS2_2 ]
+      - endpoint_ports: [ Eth1 ]
+        switch_ports: [ Ethernet5 ]
+        switches: [ DC1_ACCESS2_1 ]
         profile: Profile_VID_30
-        port_channel:
-          endpoint_port_channel: Team0
-          mode: active
+      - endpoint_ports: [ Eth2 ]
+        switch_ports: [ Ethernet5 ]
+        switches: [ DC1_ACCESS2_2 ]
+        profile: Profile_VID_30
   - name: client4-dc1
     rack: RackD
     adapters:
@@ -82,13 +83,14 @@ servers:
   - name: client3-dc2
     rack: RackY
     adapters:
-      - endpoint_ports: [ Eth1, Eth2 ]
-        switch_ports: [ Ethernet5, Ethernet5 ]
-        switches: [ DC2_ACCESS2_1, DC2_ACCESS2_2 ]
+      - endpoint_ports: [ Eth1 ]
+        switch_ports: [ Ethernet5 ]
+        switches: [ DC2_ACCESS2_1 ]
         profile: Profile_VID_30
-        port_channel:
-          endpoint_port_channel: Team0
-          mode: active
+      - endpoint_ports: [ Eth2 ]
+        switch_ports: [ Ethernet5 ]
+        switches: [ DC2_ACCESS2_2 ]
+        profile: Profile_VID_30
   - name: client4-dc2
     rack: RackZ
     adapters:
