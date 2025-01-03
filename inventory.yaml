@@ -1,0 +1,77 @@
+CEVXLANDCI:
+  children:
+    DC1:
+      children:
+        DC1_SPINES:
+          hosts:
+            DC1_SPINE1:
+              ansible_host: 172.100.100.11
+              # groups:
+              #   - bgp_enabled
+            DC1_SPINE2:
+              ansible_host: 172.100.100.12
+              # groups:
+              #   - bgp_enabled
+        DC1_ACCESS:
+          children:
+            DC1_ACCESS1:
+              hosts:
+                DC1_ACCESS1_1:
+                  ansible_host: 172.100.100.111
+                DC1_ACCESS1_2:
+                  ansible_host: 172.100.100.112
+            DC1_ACCESS2:
+              hosts:
+                DC1_ACCESS2_1:
+                  ansible_host: 172.100.100.113
+                DC1_ACCESS2_2:
+                  ansible_host: 172.100.100.114
+    DC2:
+      children:
+        DC2_SPINES:
+          hosts:
+            DC2_SPINE1:
+              ansible_host: 172.100.100.21             
+            DC2_SPINE2:
+              ansible_host: 172.100.100.22
+        DC2_ACCESS:
+          children:
+            DC2_ACCESS1:
+              hosts:
+                DC2_ACCESS1_1:
+                  ansible_host: 172.100.100.121
+                DC2_ACCESS1_2:
+                  ansible_host: 172.100.100.122
+            DC2_ACCESS2:
+              hosts:
+                DC2_ACCESS2_1:
+                  ansible_host: 172.100.100.123
+                DC2_ACCESS2_2:
+                  ansible_host: 172.100.100.124
+    # WAN:
+    #   hosts:
+    #     WAN_EMU:
+    #       ansible_host: 172.100.100.166
+  vars:
+    ansible_connection: httpapi
+    ansible_httpapi_use_ssl: true
+    ansible_httpapi_validate_certs: false
+    ansible_user: admin
+    ansible_password: admin
+    ansible_become: true
+    ansible_become_method: enable
+    ansible_network_os: eos
+    ansible_httpapi_port: 443
+    ansible_python_interpreter: $(which python3)
+
+NETWORK_SERVICES:
+  children:
+    DC1_SPINES:
+    DC2_SPINES:
+    DC1_ACCESS:
+    DC2_ACCESS:
+    
+CONNECTED_ENDPOINTS:
+  children:
+    DC1_ACCESS:
+    DC2_ACCESS:

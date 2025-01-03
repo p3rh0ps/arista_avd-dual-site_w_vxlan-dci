@@ -1,0 +1,102 @@
+---
+port_profiles:
+  - profile: Profile_VID_10
+    mode: trunk
+    vlans: 10,20,30,40
+    spanning_tree_portfast: edge
+  - profile: Profile_VID_20
+    mode: trunk
+    vlans: 10,20,30,40
+    spanning_tree_portfast: edge
+  - profile: Profile_VID_30
+    mode: trunk
+    vlans: 10,20,30,40
+    spanning_tree_portfast: edge
+  - profile: Profile_VID_40
+    mode: access
+    vlans: 40
+    spanning_tree_portfast: edge
+
+servers:
+  - name: client1-dc1
+    rack: RackA
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet5, Ethernet5 ]
+        switches: [ DC1_ACCESS1_1, DC1_ACCESS1_2 ]
+        profile: Profile_VID_10
+        port_channel:
+          endpoint_port_channel: Team0
+          mode: active
+  - name: client2-dc1
+    rack: RackB
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet6, Ethernet6 ]
+        switches: [ DC1_ACCESS1_1, DC1_ACCESS1_2 ]
+        profile: Profile_VID_20
+        port_channel:
+          endpoint_port_channel: Team0
+          mode: "on"
+  - name: client3-dc1
+    rack: RackC
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet5, Ethernet5 ]
+        switches: [ DC1_ACCESS2_1, DC1_ACCESS2_2 ]
+        profile: Profile_VID_30
+        port_channel:
+          endpoint_port_channel: Team0
+          mode: active
+  - name: client4-dc1
+    rack: RackD
+    adapters:
+      - endpoint_ports: [ Eth1 ]
+        switch_ports: [ Ethernet6 ]
+        switches: [ DC1_ACCESS2_1 ]
+        profile: Profile_VID_40
+      - endpoint_ports: [ Eth2 ]
+        switch_ports: [ Ethernet6 ]
+        switches: [ DC1_ACCESS2_2 ]
+        profile: Profile_VID_40
+  - name: client1-dc2
+    rack: RackW
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet5, Ethernet5 ]
+        switches: [ DC2_ACCESS1_1, DC2_ACCESS1_2 ]
+        profile: Profile_VID_10
+        port_channel:
+          endpoint_port_channel: Team0
+          mode: active
+  - name: client2-dc2
+    rack: RackX
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet6, Ethernet6 ]
+        switches: [ DC2_ACCESS1_1, DC2_ACCESS1_2 ]
+        profile: Profile_VID_20
+        port_channel:
+          endpoint_port_channel: Team0
+          mode: "on"
+  - name: client3-dc2
+    rack: RackY
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet5, Ethernet5 ]
+        switches: [ DC2_ACCESS2_1, DC2_ACCESS2_2 ]
+        profile: Profile_VID_30
+        port_channel:
+          endpoint_port_channel: Team0
+          mode: active
+  - name: client4-dc2
+    rack: RackZ
+    adapters:
+      - endpoint_ports: [ Eth1 ]
+        switch_ports: [ Ethernet6 ]
+        switches: [ DC2_ACCESS2_1 ]
+        profile: Profile_VID_40
+      - endpoint_ports: [ Eth2 ]
+        switch_ports: [ Ethernet6 ]
+        switches: [ DC2_ACCESS2_2 ]
+        profile: Profile_VID_40

@@ -1,0 +1,35 @@
+---
+### group_vars/DC1_SPINES.yml
+
+type: l3spine     # Must be either l2spine|l3spine
+
+vxlan_interface:
+  vxlan1:
+    description: Vxlan Interface
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
+      # # For the Traffic Class to be derived based on the outer DSCP field of the incoming VxLan packet, the core ports must be in "DSCP Trust" mode.
+      # # !!!Warning, only few hardware types with software version >= 4.26.0 support the below knobs to configure Vxlan DSCP mapping.
+      # qos:
+      #   dscp_propagation_encapsulation: false
+      #   # Enable copying the ECN marking to/from encapsulated packets.
+      #   ecn_propagation: false
+      #   map_dscp_to_traffic_class_decapsulation: false
+      vlans:
+        - id: 10
+          vni: 200010
+          flood_vteps:
+            - 2.2.2.2
+        - id: 20
+          vni: 200020
+          flood_vteps:
+            - 2.2.2.2
+        - id: 30
+          vni: 200030
+          flood_vteps:
+            - 2.2.2.2
+        - id: 40
+          vni: 200040
+          flood_vteps:
+            - 2.2.2.2

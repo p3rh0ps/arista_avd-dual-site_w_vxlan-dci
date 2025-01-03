@@ -1,0 +1,21 @@
+# Environments
+.env
+.venv
+.init_env
+
+# documentation
+documentation
+
+# AVD - Configs - Backup - Reports - Miscs
+config_backup
+*.bak
+intended
+reports
+miscs
+
+# Containerlab
+clab-cevxlandci
+
+# vscode
+.vscode
+

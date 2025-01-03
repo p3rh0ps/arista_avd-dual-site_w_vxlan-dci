@@ -1,0 +1,79 @@
+---
+### group_vars/DC1.yml
+
+aaa_authentication:
+  policies:
+    local:
+      allow_nopassword: false
+
+# local users
+local_users:
+  # Username with no password configured
+  - name: arista
+    privilege: 15
+    role: network-admin
+    sha512_password: "$6$TUgGf.R7MTnOahPO$/RMiTSxHYk1cEB5AJ8UCcdTp6TjLGfBkhZvBKaBMk7PL00Gu.QWEu2zNHmjgW6rP2CpbJKesJxn7hstwc3g7q."
+
+  # Username with a password
+  - name: admin
+    privilege: 15
+    role: network-admin
+    sha512_password: "$6$1W8aOMbmB3sjxOhN$dMqS77H4Qz16GfZCowxYNHe1hUPFCRT8aUaPEMmVmG2DdY39Eg6xV/.sVJIWhlYdYjbMnBaPtdZnooHIgncxk."
+
+# OOB Management network default gateway
+mgmt_gateway: 172.100.100.1
+mgmt_interface: Management0
+
+# dns servers.
+# name_servers:
+#   - 8.8.4.4
+#   - 8.8.8.8
+
+# NTP Servers IP or DNS name, first NTP server will be preferred, and sourced from Management VRF
+# ntp_settings:
+#   server_vrf: use_mgmt_interface_vrf
+#   servers:
+#     - name: time.google.com
+#     - name: pool.ntp.org
+
+# Establish exec/enable role when logging in to switch
+aaa_authorization:
+  exec:
+    default: local
+
+# Underlay Routing Protocol
+underlay_routing_protocol: ebgp
+bgp_default_ipv4_unicast: true
+
+bgp_peer_groups:
+  ipv4_underlay_peers:
+    bfd: true
+  mlag_ipv4_underlay_peer:
+    bfd: true
+
+# Suppress this directive in Production environment
+# Avoid having 'q' option in 'show ip bgp' output for specific prefix in intra AS session
+bgp_update_wait_install: false
+
+node_type_keys:
+
+  - key: l3spine
+    type: l3spine
+    connected_endpoints: true
+    mlag_support: true
+    network_services:
+      l2: true
+      l3: true
+    default_overlay_routing_protocol: none
+    default_underlay_routing_protocol: ebgp
+    underlay_router: true
+    uplink_type: p2p
+
+  - key: l2leaf
+    type: l2leaf
+    connected_endpoints: true
+    mlag_support: true
+    network_services:
+      l2: true
+    underlay_router: false
+    uplink_type: port-channel

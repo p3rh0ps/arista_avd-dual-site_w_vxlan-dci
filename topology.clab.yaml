@@ -1,0 +1,151 @@
+name: cevxlandci
+
+topology:
+  kinds:
+    ceos:
+      startup-config: ceos_lab_template/ceos.cfg.tpl
+      image: ceos:4.31.5M
+      exec:
+        - sleep 30
+        - FastCli -p 15 -c 'security pki key generate rsa 2048 eAPI.key'
+        - FastCli -p 15 -c 'security pki certificate generate self-signed eAPI.crt key eAPI.key generate rsa 2048 validity 30000 parameters common-name eAPI'
+    linux:
+      image: alpine-host
+  nodes:
+    dc1-core1:
+      kind: ceos
+      mgmt-ipv4: 172.100.100.11
+    dc1-core2:
+      kind: ceos
+      mgmt-ipv4: 172.100.100.12
+    dc1-access1-1:
+      kind: ceos
+      mgmt-ipv4: 172.100.100.111
+    dc1-access1-2:
+      kind: ceos
+      mgmt-ipv4: 172.100.100.112
+    dc1-access2-1:
+      kind: ceos
+      mgmt-ipv4: 172.100.100.113
+    dc1-access2-2:
+      kind: ceos
+      mgmt-ipv4: 172.100.100.114
+    wan-emu:
+      kind: ceos
+      mgmt-ipv4: 172.100.100.166
+      startup-config: startup/wan-emu.cfg
+    dc1-client1:
+      kind: linux
+      mgmt-ipv4: 172.100.100.131
+      env:
+        TMODE: lacp
+    dc1-client2:
+      kind: linux
+      mgmt-ipv4: 172.100.100.132
+      env:
+        TMODE: static
+    dc1-client3:
+      kind: linux
+      mgmt-ipv4: 172.100.100.133
+      env:
+        TMODE: active-backup
+        TACTIVE: eth1
+    dc1-client4:
+      kind: linux
+      mgmt-ipv4: 172.100.100.134
+      env:
+        TMODE: none
+    dc2-core1:
+      kind: ceos
+      mgmt-ipv4: 172.100.100.21
+    dc2-core2:
+      kind: ceos
+      mgmt-ipv4: 172.100.100.22
+    dc2-access1-1:
+      kind: ceos
+      mgmt-ipv4: 172.100.100.121
+    dc2-access1-2:
+      kind: ceos
+      mgmt-ipv4: 172.100.100.122
+    dc2-access2-1:
+      kind: ceos
+      mgmt-ipv4: 172.100.100.123
+    dc2-access2-2:
+      kind: ceos
+      mgmt-ipv4: 172.100.100.124
+    dc2-client1:
+      kind: linux
+      mgmt-ipv4: 172.100.100.141
+      env:
+        TMODE: lacp
+    dc2-client2:
+      kind: linux
+      mgmt-ipv4: 172.100.100.142
+      env:
+        TMODE: static
+    dc2-client3:
+      kind: linux
+      mgmt-ipv4: 172.100.100.143
+      env:
+        TMODE: active-backup
+        TACTIVE: eth1
+    dc2-client4:
+      kind: linux
+      mgmt-ipv4: 172.100.100.144
+      env:
+        TMODE: none
+
+  links:
+    - endpoints: ["dc1-access1-1:eth1", "dc1-core1:eth1"]
+    - endpoints: ["dc1-access1-2:eth1", "dc1-core1:eth2"]
+    - endpoints: ["dc1-access2-1:eth1", "dc1-core1:eth3"]
+    - endpoints: ["dc1-access2-2:eth1", "dc1-core1:eth4"]
+    - endpoints: ["dc1-access1-1:eth2", "dc1-core2:eth1"]
+    - endpoints: ["dc1-access1-2:eth2", "dc1-core2:eth2"]
+    - endpoints: ["dc1-access2-1:eth2", "dc1-core2:eth3"]
+    - endpoints: ["dc1-access2-2:eth2", "dc1-core2:eth4"]
+    - endpoints: ["dc1-access1-1:eth3", "dc1-access1-2:eth3"]
+    - endpoints: ["dc1-access1-1:eth4", "dc1-access1-2:eth4"]
+    - endpoints: ["dc1-access2-1:eth3", "dc1-access2-2:eth3"]
+    - endpoints: ["dc1-access2-1:eth4", "dc1-access2-2:eth4"]
+    - endpoints: ["dc1-access1-1:eth5", "dc1-client1:eth1"]
+    - endpoints: ["dc1-access1-2:eth5", "dc1-client1:eth2"]
+    - endpoints: ["dc1-access1-1:eth6", "dc1-client2:eth1"]
+    - endpoints: ["dc1-access1-2:eth6", "dc1-client2:eth2"]
+    - endpoints: ["dc1-access2-1:eth5", "dc1-client3:eth1"]
+    - endpoints: ["dc1-access2-2:eth5", "dc1-client3:eth2"]
+    - endpoints: ["dc1-access2-1:eth6", "dc1-client4:eth1"]
+    - endpoints: ["dc1-access2-2:eth6", "dc1-client4:eth2"]
+    - endpoints: ["dc2-access1-1:eth1", "dc2-core1:eth1"]
+    - endpoints: ["dc2-access1-2:eth1", "dc2-core1:eth2"]
+    - endpoints: ["dc2-access2-1:eth1", "dc2-core1:eth3"]
+    - endpoints: ["dc2-access2-2:eth1", "dc2-core1:eth4"]
+    - endpoints: ["dc2-access1-1:eth2", "dc2-core2:eth1"]
+    - endpoints: ["dc2-access1-2:eth2", "dc2-core2:eth2"]
+    - endpoints: ["dc2-access2-1:eth2", "dc2-core2:eth3"]
+    - endpoints: ["dc2-access2-2:eth2", "dc2-core2:eth4"]
+    - endpoints: ["dc1-core1:eth7", "dc1-core2:eth7"]
+    - endpoints: ["dc1-core1:eth8", "dc1-core2:eth8"]
+    - endpoints: ["dc2-core1:eth7", "dc2-core2:eth7"]
+    - endpoints: ["dc2-core1:eth8", "dc2-core2:eth8"]
+    - endpoints: ["dc2-access1-1:eth3", "dc2-access1-2:eth3"]
+    - endpoints: ["dc2-access1-1:eth4", "dc2-access1-2:eth4"]
+    - endpoints: ["dc2-access2-1:eth3", "dc2-access2-2:eth3"]
+    - endpoints: ["dc2-access2-1:eth4", "dc2-access2-2:eth4"]
+    - endpoints: ["dc2-access1-1:eth5", "dc2-client1:eth1"]
+    - endpoints: ["dc2-access1-2:eth5", "dc2-client1:eth2"]
+    - endpoints: ["dc2-access1-1:eth6", "dc2-client2:eth1"]
+    - endpoints: ["dc2-access1-2:eth6", "dc2-client2:eth2"]
+    - endpoints: ["dc2-access2-1:eth5", "dc2-client3:eth1"]
+    - endpoints: ["dc2-access2-2:eth5", "dc2-client3:eth2"]
+    - endpoints: ["dc2-access2-1:eth6", "dc2-client4:eth1"]
+    - endpoints: ["dc2-access2-2:eth6", "dc2-client4:eth2"]
+    - endpoints: ["dc1-core1:eth5", "wan-emu:eth1"]
+    - endpoints: ["dc1-core2:eth5", "wan-emu:eth2"]
+    - endpoints: ["dc2-core1:eth5", "wan-emu:eth3"]
+    - endpoints: ["dc2-core2:eth5", "wan-emu:eth4"]
+
+mgmt:
+  network: ceos_clab
+  ipv4-subnet: 172.100.100.0/24
+  ipv6-subnet: 2001:172:100:100::/80

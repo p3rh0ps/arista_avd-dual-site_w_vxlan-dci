@@ -1,0 +1,97 @@
+---
+### group_vars/DC1_CEVXLAN.yml
+
+# Set the Fabric Name - must match an Ansible Inventory Group
+fabric_name: CEVXLANDCI
+
+# Ansible connectivity definitions
+# eAPI connectivity via HTTPS is specified (as opposed to CLI via SSH)
+ansible_connection: ansible.netcommon.httpapi
+# Specifies that we are indeed using Arista EOS
+ansible_network_os: arista.eos.eos
+# This user/password must exist on the switches to enable Ansible access
+ansible_user: admin
+ansible_password: admin
+# User escalation (to enter enable mode)
+ansible_become: true
+ansible_become_method: enable
+# Use SSL (HTTPS)
+ansible_httpapi_use_ssl: true
+# Do not try to validate certs
+ansible_httpapi_validate_certs: false
+
+# Spine Switches (L2 only with L3 for VxLan Pseudowire Purpose)
+l3spine:
+  defaults:
+    platform: cEOS-LAB
+    spanning_tree_mode: mstp
+    spanning_tree_priority: 0
+    mlag_peer_ipv4_pool: 192.168.1.0/24
+    loopback_ipv4_pool: 192.168.101.0/24
+    mlag_peer_l3_ipv4_pool: 192.168.201.0/24
+    mlag_interfaces: [ethernet7, ethernet8]
+    uplink_bfd: true
+    uplink_native_vlan: 1
+  node_groups:
+    - group: SPINES
+      bgp_as: "65001.1001"
+      bgp_defaults:
+        - bgp asn notation asdot
+        - distance bgp 20 200 200
+        - graceful-restart restart-time 300
+        - graceful-restart
+      mlag: true
+      nodes:
+        - name: DC1_SPINE1
+          id: 1
+          mgmt_ip: 172.100.100.11/24
+        - name: DC1_SPINE2
+          id: 2
+          mgmt_ip: 172.100.100.12/24
+
+# Leaf Switches
+l2leaf:
+  defaults:
+    platform: cEOS-LAB
+    mlag_peer_ipv4_pool: 192.168.11.0/24
+    uplink_switches: [DC1_SPINE1, DC1_SPINE2]
+    uplink_interfaces: [Ethernet1, Ethernet2]
+    mlag_interfaces: [Ethernet3, Ethernet4]
+    spanning_tree_mode: mstp
+    spanning_tree_priority: 16384
+    uplink_bfd: true
+    uplink_native_vlan: 1
+  node_groups:
+    - group: RACK1
+      mlag: true
+      filter:
+        tags: [bluezone, greenzone, redzone]
+      nodes:
+        - name: DC1_ACCESS1_1
+          id: 3
+          mgmt_ip: 172.100.100.111/24
+          uplink_switch_interfaces: [Ethernet1, Ethernet1]
+        - name: DC1_ACCESS1_2
+          id: 4
+          mgmt_ip: 172.100.100.112/24
+          uplink_switch_interfaces: [Ethernet2, Ethernet2]
+    - group: RACK2
+      mlag: true
+      filter:
+        tags: [bluezone, orangezone]
+      nodes:
+        - name: DC1_ACCESS2_1
+          id: 5
+          mgmt_ip: 172.100.100.113/24
+          uplink_switch_interfaces: [Ethernet3, Ethernet3]
+        - name:  DC1_ACCESS2_2
+          id: 6
+          mgmt_ip: 172.100.100.114/24
+          uplink_switch_interfaces: [Ethernet4, Ethernet4]
+
+#### Override for vEOS/cEOS Lab Caveats ####
+p2p_uplinks_mtu: 1500
+
+# Documentation
+eos_designs_documentation:
+  connected_endpoints: false

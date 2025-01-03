@@ -1,0 +1,151 @@
+---
+### group_vars/NETWORK_SERVICES.yml
+
+tenants:
+  - name: MY_FABRIC
+    mac_vrf_vni_base: 200000
+    bgp_peer_groups:
+      - name: INTER-DC1
+        nodes:
+          - DC1_SPINE1
+          - DC1_SPINE2
+        address_family_ipv4:
+          activate: true
+        remote_as: "65001.1002"
+        shutdown: false
+        bfd: true
+      - name: INTER-DC2
+        nodes:
+          - DC2_SPINE1
+          - DC2_SPINE2
+        address_family_ipv4:
+          activate: true
+        remote_as: "65001.1001"
+        shutdown: false
+        bfd: true
+    vrfs:
+      - name: default
+        vrf_id: 0
+        mlag_ibgp_peering_vlan: true
+        bgp_peers:
+          - ip_address: 10.0.255.2
+            nodes:
+              - DC1_SPINE1
+            peer_group: INTER-DC1
+          - ip_address: 10.0.255.1
+            nodes:
+              - DC2_SPINE1
+            peer_group: INTER-DC2
+          - ip_address: 10.0.255.6
+            nodes:
+              - DC1_SPINE2
+            peer_group: INTER-DC1
+          - ip_address: 10.0.255.5
+            nodes:
+              - DC2_SPINE2
+            peer_group: INTER-DC2
+        l3_interfaces:
+          - interfaces:
+            - Ethernet 5
+            - Ethernet 5
+            - Ethernet 5
+            - Ethernet 5
+            ip_addresses:
+            - 10.0.255.1/30
+            - 10.0.255.2/30
+            - 10.0.255.5/30
+            - 10.0.255.6/30
+            nodes:
+            - DC1_SPINE1
+            - DC2_SPINE1
+            - DC1_SPINE2
+            - DC2_SPINE2
+            description: P2P DCI Interface
+            enabled: true
+            mtu: 1500
+            ospf:
+              enabled: true
+              point_to_point: true
+              area: 0.0.0.0
+        loopbacks:
+        - node: DC1_SPINE1
+          loopback: 1
+          description: VxLAN Interface for encapsulation
+          enabled: true
+          ip_address: 2.2.2.1/32
+          ospf:
+            enabled: true
+            area: 0.0.0.0
+        - node: DC1_SPINE2
+          loopback: 1
+          description: VxLAN Encapsulation
+          enabled: true
+          ip_address: 2.2.2.1/32
+          ospf:
+            enabled: true
+            area: 0.0.0.0
+        - node: DC2_SPINE1
+          loopback: 1
+          description: VxLAN Interface for encapsulation
+          enabled: true
+          ip_address: 2.2.2.2/32
+          ospf:
+            enabled: true
+            area: 0.0.0.0
+        - node: DC2_SPINE2
+          loopback: 1
+          description: VxLAN Encapsulation
+          enabled: true
+          ip_address: 2.2.2.2/32
+          ospf:
+            enabled: true
+            area: 0.0.0.0
+        svis:
+          - id: 666
+            name: mlag_ospf_adjacency
+            nodes:
+            - node: DC1_SPINE1
+              enabled: true
+              ip_address: 10.0.255.9/30
+              mtu: 1500
+              ospf:
+                enabled: true
+                area: 0.0.0.0
+                point_to_point: true
+            - node: DC1_SPINE2
+              enabled: true
+              ip_address: 10.0.255.10/30
+              mtu: 1500
+              ospf:
+                enabled: true
+                area: 0.0.0.0
+                point_to_point: true
+            - node: DC2_SPINE1
+              enabled: true
+              ip_address: 10.0.255.13/30
+              mtu: 1500
+              ospf:
+                enabled: true
+                area: 0.0.0.0
+                point_to_point: true
+            - node: DC2_SPINE2
+              enabled: true
+              ip_address: 10.0.255.14/30
+              mtu: 1500
+              ospf:
+                enabled: true
+                area: 0.0.0.0
+                point_to_point: true
+    l2vlans:
+      - id: 10
+        name: 'BLUE-NET'
+        tags: [bluezone]
+      - id: 20
+        name: 'GREEN-NET'
+        tags: [greenzone]
+      - id: 30
+        name: 'ORANGE-NET'
+        tags: [orangezone]
+      - id: 40
+        name: 'RED-NET'
+        tags: [redzone]

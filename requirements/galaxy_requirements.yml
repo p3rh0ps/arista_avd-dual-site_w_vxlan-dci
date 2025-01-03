@@ -1,0 +1,13 @@
+---
+collections:
+
+- name: ansible.netcommon
+  version: 7.1.0
+- name: ansible.utils
+  version: 5.1.2
+- name: arista.avd
+  version: 5.1.0
+- name: arista.cvp
+  version: 3.12.0
+- name: arista.eos
+  version: 10.0.1
