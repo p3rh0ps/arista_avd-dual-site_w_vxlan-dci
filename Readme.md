@@ -48,8 +48,7 @@ Some ipv4 configuration have been inserted in each client to test on the fly the
 | DC1 | `clab-cevxlandci-dc1-access1-3` | team0 | Trunk 802.1Q | 20 | 66.20.0.3/24 |
 | DC1 | `clab-cevxlandci-dc1-access1-3` | team0 | Trunk 802.1Q | 30 | 66.30.0.3/24 |
 | DC1 | `clab-cevxlandci-dc1-access1-3` | team0 | Trunk 802.1Q | 40 | 66.40.0.3/24 |
-| DC1 | `clab-cevxlandci-dc1-access1-3` | team0 | Trunk 802.1Q | 40 | 66.40.0.3/24 |
-| DC1 | `clab-cevxlandci-dc1-access1-3` | eth1 | Access | 40 | 66.40.0.4/24 |
+| DC1 | `clab-cevxlandci-dc1-access1-4` | eth1 | Access | 40 | 66.40.0.4/24 |
 | DC2 | `clab-cevxlandci-dc2-access1-1` | team0 | Trunk 802.1Q | 10 | 66.10.0.251/24 |
 | DC2 | `clab-cevxlandci-dc2-access1-1` | team0 | Trunk 802.1Q | 20 | 66.20.0.251/24 |
 | DC2 | `clab-cevxlandci-dc2-access1-1` | team0 | Trunk 802.1Q | 30 | 66.30.0.251/24 |
@@ -62,5 +61,4 @@ Some ipv4 configuration have been inserted in each client to test on the fly the
 | DC2 | `clab-cevxlandci-dc2-access1-3` | team0 | Trunk 802.1Q | 20 | 66.20.0.253/24 |
 | DC2 | `clab-cevxlandci-dc2-access1-3` | team0 | Trunk 802.1Q | 30 | 66.30.0.253/24 |
 | DC2 | `clab-cevxlandci-dc2-access1-3` | team0 | Trunk 802.1Q | 40 | 66.40.0.253/24 |
-| DC2 | `clab-cevxlandci-dc2-access1-3` | team0 | Trunk 802.1Q | 40 | 66.40.0.253/24 |
-| DC2 | `clab-cevxlandci-dc2-access1-3` | eth1 | Access | 40 | 66.40.0.254/24 |
+| DC2 | `clab-cevxlandci-dc2-access1-4` | eth1 | Access | 40 | 66.40.0.254/24 |
