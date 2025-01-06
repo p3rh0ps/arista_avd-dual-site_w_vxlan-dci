@@ -16,11 +16,13 @@ It demonstrates the ability to implement and manage all kinds of designs through
 
 Each site is in 802.3 classical Ethernet with MLAG configured at the core and access layer (kind of L2LS in Arista naming).<br>
 Also, the 2 sites are interconnected with two Layer-3 point-to-point links, and eBGP adjacencies on top of it (using BFD) to propagate VTEP IPv4 anycast address information.<br>
-All vlans are extended via VxLAN through core switches configured in MLAG with VxLAN HER aka. "Head End Replication" to replicate BUM traffic over vxlan (flooding).<br>
+All vlans are extended via VxLAN through core switches configured in MLAG with VxLAN HER aka. "Head End Replication" to replicate BUM traffic over vxlan (flooding behavior).<br>
 
 Setup the lab, please follow this link [Lab Setup](Setup.md)
 
 Deploy the lab, please follow this link [Lab Deployment](Deployment.md)
+
+You will be able to retrieve all infrastructure documentation once the lab will be deployed in the documentation folder, thanks to AVD !
 
 To be able to test the connectivity, 4 clients are implemented in multiple connectivity design options in each DC:<br>
 
